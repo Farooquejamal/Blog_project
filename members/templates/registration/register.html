@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block title %}Register User 
+{% endblock %} 
+{% block content %}
+<div class="form-group login-container">
+  <center><h1 color="#6c467a">Register...</h1></center>
+  <br><br>
+  <form method="POST" class="login-form">
+    
+    {% csrf_token %} {{form.as_p}}
+    <small>Already An User? <a href="{% url "login" %}">Login</a></small>
+    <center><button class="btn btn-primary" >Register</button></center>
+  </form>
+</div>
+
+<style>
+  .login-container {
+    width: 50%;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+  }
+  .login-form {
+    margin-top: 20px;
+  }
+</style>
+{% endblock content %}

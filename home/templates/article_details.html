@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}{{object.title_tag}}{% endblock  %}
+{% block content %}
+
+<h1>{{object.title}} </h1>
+<small>By:
+{{object.author.first_name}} {{object.author.last_name}}</small>
+<div class='d-flex justify-content-between'>
+    <p>created - {{object.created_at}}</p>
+    <p>Last updated -{{object.updated_at}}</p>
+</div>
+    {% if user.is_authenticated %}
+        {% if user.id == object.author.id %}
+            -<a href="{% url "update_post" object.pk  %}">(Edit)</a>
+            -<a href="{% url "delete_post" object.pk %}">(Delete)</a>
+        
+            {% endif %}
+    {% endif %}
+<br>
+<hr>
+<center><img src="{{object.image.url}}" style="height:400px; width:600px;"></center>
+{{object.content|safe}}
+
+
+
+<br><br>
+<hr><br>
+<form action="{% url "like_post" object.pk %}" method="POST">
+{% csrf_token %}
+
+{% if user.is_authenticated %}
+    {% if liked %}
+        <button type='submit' name='post.id', value="{{object.id}}", class="btn btn-danger btn-sm">Unlike</button>
+    {% else %}
+        <button type='submit' name='post.id', value="{{object.id}}", class="btn btn-primary btn-sm">Like</button>
+    {% endif %}
+{% else %}
+    <small><a href="{% url "login" %}">Login</a> to like</small>
+{% endif %}
+ - {{total_likes}} Likes
+</form>
+<br><br>
+
+
+<br><br><br><br>
+<div class="card mb-3">
+    <div class="row g-0">
+      <div class="col-md-2">
+        {% if object.author.profile.profile_pic %}
+        <img src="{{object.author.profile.profile_pic.url}}" class="img-fluid rounded" style="width: 200px; height: 200px;">
+        {% else %}
+        <img src="{% static 'avatar.png' %}" class="img-fluid rounded" >
+        {% endif %}
+      </div>
+      <div class="col-md-10">
+        <div class="card-body">
+          <h5 class="card-title">{{object.author.first_name}} {{object.author.last_name}}</h5>
+          <p class="card-text">{{object.author.profile.bio}}</p>
+          <p class="small text-muted">
+
+            <a href="{% url 'show_profile_page' object.author.profile.id %}">Profile Page</a> 
+
+            {% if object.author.profile.facebook_url %}
+            | <a href="{{object.author.profile.facebook_url}}">Facebook </a>| 
+            {% endif %}
+
+            {% if object.author.profile.twitter_url %}
+            <a href="{{object.author.profile.twitter_url}}">Twitter </a> | 
+            {% endif %}
+            
+            {% if object.author.profile.instagram_url %}
+            <a href="{{object.author.profile.instagram_url}}">Instagram </a>
+            {% endif %}
+        </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <hr>
+<h1>Comments...</h1>
+<br>
+{% if not object.comments.all %}
+  No Comments Yet...<a href="{% url "add_comment" object.pk %}">Add One</a>
+{% else %}
+
+<a href="{% url "add_comment" object.pk %}">Add Comment</a>
+<br><br>
+  {% for comment in object.comments.all %}
+  <strong>
+    {{comment.name}}
+    {{comment.date_added}}
+  </strong>
+  <br>
+  {{ comment.body }}
+  <br><br><br>
+  {% endfor %}
+  <a href="{% url "add_comment" object.pk %}">Add Comment</a>
+{% endif %}
+<br>
+
+<br><br>
+
+{% endblock %}

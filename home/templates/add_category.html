@@ -1,0 +1,58 @@
+{% extends "base.html" %} 
+
+{% comment %} 
+
+{% block title %}Create Category 
+{% endblock %} 
+{% block content %}
+
+{% if user.is_authenticated %}
+<h1>Add Category...</h1>
+<div class="form-group">
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %} {{form.as_p}}
+    <button class="btn btn-secondary">Add Category</button>
+  </form>
+</div>
+{% else %}
+You are not allowed to be here. First login or Register
+{% endif %}
+{% endblock content %} 
+
+{% endcomment %}
+
+
+
+
+{% block title %}Create Category{% endblock %} 
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h1 class="text-center mb-4">Add Category</h1>
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ form.as_p }}
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-secondary">Add Category</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-danger text-center" role="alert">
+    You are not allowed to be here. Please <a href="{% url 'login' %}" class="alert-link">login</a> or <a href="{% url 'register' %}" class="alert-link">register</a>.
+</div>
+{% endif %}
+
+{% endblock content %}

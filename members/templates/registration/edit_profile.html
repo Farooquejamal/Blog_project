@@ -1,0 +1,52 @@
+{% extends "base.html" %} 
+{% comment %} 
+{% block title %}Edit Profile 
+{% endblock %} 
+{% block content %}
+<h1>Edit Profile...</h1>
+<br><br>
+
+{{user.profile.bio}}
+
+<br><br>
+<div class="form-group">
+  <form method="POST">
+    
+    {% csrf_token %} {{form.as_p}}
+    <button class="btn btn-secondary">Update</button>
+  </form>
+</div>
+{% endblock content %} {% endcomment %}
+
+
+
+
+{% block title %} Edit Profile {% endblock %} 
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">Edit Your Profile</h1>
+    
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card p-4 shadow-sm">
+                <h5>Current Bio:</h5>
+                <p class="border p-2 bg-light">{{ user.profile.bio }}</p>
+                
+                <div class="form-group mt-4">
+                    <form method="POST">
+                        {% csrf_token %}
+                        
+                        {{ form.as_p }}
+                        
+                        <div class="text-center">
+                            <button class="btn btn-primary mt-3">Update Profile</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+

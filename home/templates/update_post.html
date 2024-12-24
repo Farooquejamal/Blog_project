@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block title %}Update Blog 
+{% endblock %} 
+{% block content %}
+{% if user.id == object.author.id %}
+    <h1>Update Post...</h1>
+    <div class="form-group">
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %} {{form.media}}{{form.as_p}}
+        {% if user.is_authenticated %}
+        <button class="btn btn-secondary">Update</button>
+        {% comment %} <a class="btn btn-danger" href="{% url "delete_post" object.pk %}">Delete</a> {% endcomment %}
+        
+      </form>
+    </div>
+    {% else %}
+    You are not allowed here! and you know it.
+    {% endif %}
+{% else %}
+You are not allowed here! and you know it.
+{% endif %}
+{% endblock content %}

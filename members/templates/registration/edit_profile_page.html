@@ -1,0 +1,66 @@
+{% extends "base.html" %} 
+
+{% comment %} {% block title %} Edit Profile {% endblock %} 
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    {% if user.id == profile.user.id %}
+        <h1>Edit Settings...</h1>
+        <div class="form-group">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %} 
+                
+                {{ form.as_p }}
+                <button class="btn btn-secondary">Edit Profile Page</button>
+            </form>
+        </div>
+    {% else %}
+        <p>You are not the correct user to edit this page...</p>
+    {% endif %}
+{% else %}
+    <p>You are not allowed to be here. Please <a href="{% url 'login' %}">login</a> or <a href="{% url 'register' %}">register</a>.</p>
+{% endif %}
+
+{% endblock content %} {% endcomment %}
+
+
+
+
+{% block title %} Edit Profile {% endblock %} 
+
+{% block content %}
+
+<div class="container my-5">
+    {% if user.is_authenticated %}
+        {% if user.id == profile.user.id %}
+            <h1 class="text-center mb-4">Edit Profile Settings</h1>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card p-4 shadow-sm">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            
+                            {{ form.as_p }}
+                            
+                            <div class="text-center">
+                                <button class="btn btn-primary mt-3">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-warning text-center">
+                <p>You are not authorized to edit this profile page.</p>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="alert alert-danger text-center">
+            <p>You are not allowed to be here. Please <a href="{% url 'login' %}">login</a> or <a href="{% url 'register' %}">register</a>.</p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock content %}
+

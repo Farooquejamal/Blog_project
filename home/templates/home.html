@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% comment %} 
+{% block content %}
+
+<h2>Post</h2>
+<ul>
+  {% for post in object_list %}
+  <li><a href="{% url "article-detail" post.pk %}">
+    {{post.title}} </a> &nbsp; &nbsp; &nbsp;
+    <a href="{% url "category" post.category|slugify %}"> {{post.category}} </a>
+    &nbsp; &nbsp; &nbsp; &nbsp;
+    {% if user.is_authenticated %}
+      {% if user.id == post.author.id %}
+        <a class="btn btn-info" href="{% url "update_post" post.pk %}">Edit</a>
+        <a class="btn btn-danger" href="{% url "delete_post" post.pk %}">Delete</a>
+      {% endif %}
+    {% endif %}
+    <br />
+    {{post.snippet}}
+    {% comment %} {{post.content|safe|slice:":300" }} {% endcomment %}
+  {% comment %} 
+  </li>
+  {% endfor %}
+</ul>
+
+
+{% endblock %} {% endcomment %}
+
+
+
+
+
+
+{% comment %} {% extends "base.html" %} {% endcomment %}
+
+{% block content %}
+
+<h2>Posts</h2>
+
+<div class="row">
+  {% for post in object_list %}
+  <div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm">
+      <!-- Post Image -->
+      {% if post.image %}
+      <img src="{{ post.image.url }}" height="200px" class="card-img-top" alt="{{ post.title }}">
+      {% endif %}
+
+      <div class="card-body">
+        <h5 class="card-title">
+          <a href="{% url 'article-detail' post.pk %}">{{ post.title }}</a>
+        </h5>
+
+        <!-- Category with link -->
+        <a href="{% url 'category' post.category|slugify %}" class="badge bg-primary">{{ post.category }}</a>
+        
+        <!-- Post Snippet -->
+        <p class="card-text mt-2">{{ post.snippet }}</p>
+
+        <!-- Edit and Delete buttons (visible only to the author) -->
+        {% if user.is_authenticated %}
+          {% if user.id == post.author.id %}
+          <div class="mt-2">
+            <a class="btn btn-info btn-sm" href="{% url 'update_post' post.pk %}">Edit</a>
+            <a class="btn btn-danger btn-sm" href="{% url 'delete_post' post.pk %}">Delete</a>
+          </div>
+          {% endif %}
+        {% endif %}
+      </div>
+      
+      <!-- Footer with read more link -->
+      <div class="card-footer">
+        <a href="{% url 'article-detail' post.pk %}" class="btn btn-primary btn-sm">Read More</a>
+      </div>
+    </div>s
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
